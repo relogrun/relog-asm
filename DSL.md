@@ -39,7 +39,7 @@
 - `call b64.encode <Str|Bytes>` → `Str` (base64)
 - `call b64.decode <Str>` → `Bytes`
 
-### `str` (string utils)
+### `str` 
 
 - `call str.len <Str>` → `I64`
 - `call str.lower|upper|trim <Str>` → `Str`
@@ -83,7 +83,7 @@
 - `call math.add|sub|mul|div {"a":X,"b":Y}` → `I64|F64`
 - `call math.round {"x":F,"digits":2}` → `F64`
 
-### `eval` (nested DSL)
+### `eval` 
 
 - `await call eval.dsl {"code": <Str>, "exports":["x"], "allow":["log"], "strict_await": true}` → `Json`
 - `await call eval.file {"path":"script.rasm","exports":[...],"allow":[...]}`
