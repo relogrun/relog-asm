@@ -3,7 +3,7 @@
 ## Core DSL
 
 - `use <module> [as <alias>]` — import a module, optionally with an alias.
-- Labels & jumps: `:ENTRY`, `jmp -> :LABEL`, `jmpif <cond> -> :LABEL`.
+- Labels & jumps: `:ENTRY`, `jmp -> :LABEL`, `jmpif <cond> -> :LABEL`, `jmpifnot`.
 - Comparisons: `cmp <cX> <op> <a> <b>` → `<op>`: `gt|ge|lt|le|eq|ne`.
 - Variables: `let x = <value>`, assignment: `set x <value>`.
 - Arithmetic (in-place): `add|sub|mul|div|rem|neg x <y>`.
