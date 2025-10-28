@@ -22,7 +22,7 @@ chmod +x relog-asm
 
 `hello.rasm`:
 
-```asm
+```
 use log
 call log.info "hello from RelogASM"
 ```
@@ -35,7 +35,7 @@ relog-asm hello.rasm
 
 ### One more (async shell)
 
-```asm
+```
 use sh { allowed_cmds: ["cat"], max_output_bytes: 65536 } as sh
 use b64
 use log
