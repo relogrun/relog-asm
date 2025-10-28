@@ -14,6 +14,12 @@ DSL reference: [DSL.md](./DSL.md)
 chmod +x relog-asm
 ```
 
+On macOS
+
+```bash
+xattr -dr com.apple.quarantine ./relog-asm
+```
+
 1. **Run a file**:
 
 ```bash
