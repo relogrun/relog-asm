@@ -66,7 +66,7 @@ CLI flags (e.g., `--step-limit`) override config values.
 
 ## Editor support
 
-Syntax highlighting and diagnostics are provided by the [Relog-ASM LSP + VS Code extension](https://github.com/relogrun/relog-asm-vscode)
+Syntax highlighting and diagnostics are provided by the [RelogASM LSP + VS Code extension](https://github.com/relogrun/relog-asm-vscode)
 
 Open any `.rasm` file, the server autostarts.
 
