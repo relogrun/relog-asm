@@ -1,6 +1,6 @@
 # RelogASM DSL — quick reference
 
-## Core DSL (instructions)
+## Core DSL
 
 - `use <module> [as <alias>]` — import a module, optionally with an alias.
 - Labels & jumps: `:ENTRY`, `jmp -> :LABEL`, `jmpif <cond> -> :LABEL`.
@@ -8,9 +8,11 @@
 - Variables: `let x = <value>`, assignment: `set x <value>`.
 - Arithmetic (in-place): `add|sub|mul|div|rem|neg x <y>`.
 - Module calls: `call <mod>.<method> <arg>`; async: `await call <mod>.<method> <arg>`.
-- Comments: `// …` and `/* … */`.
+- Comments: `// …`.
 - Strings: `"..."` and raw multi-line `r" ... "`.
 - Value types: `Unit, Bool, I64, F64, Str, Bytes, Json, Future`.
+- File imports: `import "path/to/file.rasm" as <alias>` — include another `.rasm`.
+- Module declaration: `mod <name> { ... }` — define an inline module. Access via `<name>::<var or label>`.
 
 ---
 
