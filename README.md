@@ -2,6 +2,8 @@
 
 RelogASM is a small assembly-style DSL and embeddable VM for composing deterministic pipelines from simple, typed instructions. 
 
+DSL reference: [DSL.md](./DSL.md)
+
 ## Quick start
 
 1. **Download & unpack** the archive for your OS from [latest release](https://github.com/relogrun/relog-asm/releases/latest):
@@ -53,8 +55,6 @@ let text = call b64.decode out_b64
 call log.info text
 halt
 ```
-
-Full DSL reference: [DSL.md](./DSL.md)
 
 ---
 
