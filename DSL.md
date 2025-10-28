@@ -5,14 +5,16 @@
 - `use <module> [as <alias>]` — import a module, optionally with an alias.
 - Labels & jumps: `:ENTRY`, `jmp -> :LABEL`, `jmpif <cond> -> :LABEL`, `jmpifnot`.
 - Comparisons: `cmp <cX> <op> <a> <b>` → `<op>`: `gt|ge|lt|le|eq|ne`.
-- Variables: `let x = <value>`, assignment: `set x <value>`.
+- Variables: `let x = <value>`.
 - Arithmetic (in-place): `add|sub|mul|div|rem|neg x <y>`.
-- Module calls: `call <mod>.<method> <arg>`; async: `await call <mod>.<method> <arg>`.
+- Calls: `call <mod>.<method> <arg>`.
+- Async: `async call …` returns a `Future`; await with `await <future>`.
 - Comments: `// …`.
 - Strings: `"..."` and raw multi-line `r" ... "`.
 - Value types: `Unit, Bool, I64, F64, Str, Bytes, Json, Future`.
 - File imports: `import "path/to/file.rasm" as <alias>` — include another `.rasm`.
 - Module declaration: `mod <name> { ... }` — define an inline module. Access via `<name>::<var or label>`.
+- JSON ops:  `json.parse <str> -> Json`, `json.stringify <value> -> Str`, `json.get {"json": <val>, "path": "<dotpath>"}`, `json.len <json|array|map> -> I64`.
 
 ---
 
@@ -30,7 +32,7 @@
 
 ### `dotenv`
 
-- `call dotenv.load` or `call dotenv.load ".env"` → load env vars from file
+- `call dotenv.load` or `call dotenv.load ".env"`
 
 ### `is` (type checks)
 
@@ -96,44 +98,3 @@
 
   - Returns → `Json({"text":Str,"usage":{...}})`
 
-### `json`
-
-- `call json.parse <Str>` → `Json`
-- `call json.stringify <Json>` → `Str`
-- `call json.get {"json":<Json>, "path":"a.b[0]"}` → `Value`
-- `call json.set {"json":<Json>, "path":"a.b", "value":<Value>}` → `Json`
-- `call json.len <Json|Str|Bytes|Array|Object>` → `I64`
-
----
-
-## Tiny examples
-
-```asm
-use log
-call log.info "hello"
-```
-
-```asm
-use sh
-use json
-use b64
-
-let out = await call sh.exec {"cmd":"bash","args":["-lc","echo hi"]}
-let s   = call json.get {"json": out, "path":"stdout_base64"}
-let txt = call b64.decode s
-```
-
-```asm
-use log
-use eval
-
-let inner = r"
-use log
-let x = 2
-mul x 5
-call log.info x
-"
-
-let res = await call eval.dsl {"code": inner, "exports":["x"], "allow":["log"], "strict_await": true}
-call log.info res
-```

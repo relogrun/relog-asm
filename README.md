@@ -36,13 +36,22 @@ relog-asm hello.rasm
 ### One more (async shell)
 
 ```asm
-use sh
-use json
+use sh { allowed_cmds: ["cat"], max_output_bytes: 65536 } as sh
 use b64
+use log
 
-let out = await call sh.exec {"cmd":"bash","args":["-lc","echo hi"]}
-let s = call json.get {"json": out, "path":"stdout_base64"}
-let txt = call b64.decode s
+// Run `cat`, capture stdout/stderr, feed stdin
+let req = {"cmd":"cat","capture_stdout":true,"capture_stderr":true,"stdin_utf8":"hello"}
+let fut = async call sh.run req
+let out = await fut
+
+// Extract base64 stdout via core JSON op, then decode to UTF-8
+let out_b64 = json.get {"json": out, "path": "stdout_base64"}
+let text = call b64.decode out_b64
+
+// Print decoded text
+call log.info text
+halt
 ```
 
 Full DSL reference: [DSL.md](./DSL.md)
@@ -51,7 +60,7 @@ Full DSL reference: [DSL.md](./DSL.md)
 
 ## Config (optional)
 
-Place `relog.config.toml` next to your script (or the current working dir):
+Place `relog.config.toml` next to your script:
 
 ```toml
 [vm]
@@ -65,11 +74,9 @@ CLI flags (e.g., `--step-limit`) override config values.
 
 ---
 
-## Built-in modules (short list)
+## Built-in modules
 
-`log`, `env`, `dotenv`, `is`, `b64`, `str`, `fs`, `http` (async), `sh` (async), `rand`, `math`, `eval` (nested DSL), `llm_chat` (async), `json`.
-
-A compact cheat-sheet lives in the repo (see **Quick reference**).
+`log`, `env`, `dotenv`, `is`, `b64`, `str`, `fs`, `http` (async), `sh` (async), `rand`, `math`, `eval`, `llm` (chat), `json` core ops.
 
 ---
 
@@ -85,7 +92,3 @@ A compact cheat-sheet lives in the repo (see **Quick reference**).
 ## License
 
 Free for Non-Commercial Use. Commercial use requires a license — [LICENSE.md](./LICENSE.md).
-
-```
-
-
