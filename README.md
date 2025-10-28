@@ -4,7 +4,7 @@ RelogASM is a small assembly-style DSL and embeddable VM for composing determini
 
 ## Quick start
 
-1. **Download & unpack** the archive for your OS from [latest release](https://github.com/relogrun/relog/releases/latest):
+1. **Download & unpack** the archive for your OS from [latest release](https://github.com/relogrun/relog-asm/releases/latest):
 
 2. **macOS/Linux:** make executable:
 
