@@ -89,7 +89,7 @@
 
 ### `eval` 
 
-- `await call eval.dsl {"code": <Str>, "exports":["x"], "allow":["log"], "strict_await": true}` → `Json`
+- `await call eval.dsl {"code": <Str>, "exports":["x"], "allow":["log"]}` → `Json`
 - `await call eval.file {"path":"script.rasm","exports":[...],"allow":[...]}`
 
 ### `llm` (async)
