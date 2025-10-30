@@ -1,0 +1,94 @@
+use log
+use env
+use dotenv
+use llm
+use fs { root: ".", read_only: false }
+use str
+use is
+use eval
+
+// LLM flow: build a system prompt from parts; read task from task.md; expect JSON { "rasm": "...", "error": "...", "text": "..." }.
+// If "rasm" exists, save to file and then execute it via eval.dsl.
+
+// Check .env.template for required vars
+
+trap :ERR -> err
+
+// Load env (.env + process)
+let _ = call dotenv.load null
+let endpoint = call env.get "LLM_ENDPOINT"
+let model = call env.get "LLM_MODEL"
+let api_token  = call env.get "LLM_API_KEY"
+let missing_api = call is.unit api_token
+jmpif missing_api -> :NO_API
+
+// Read system-prompt parts
+let p0 = await call fs.read {"path":"sample/init.md"}
+let p1 = await call fs.read {"path":"docs/dsl.md"}
+let p2 = await call fs.read {"path":"docs/modules.md"}
+let p3 = await call fs.read {"path":"docs/samples.md"}
+
+// Join parts into one system message
+let sep = "\n\n---\n\n"
+let sys = call str.join {"items":[p0,p1,p2,p3],"sep": sep}
+
+// Read task from file (instead of inline string)
+let task = await call fs.read {"path":"sample/task.md"}
+
+// Call LLM (expect strict JSON object)
+let ans = await call llm.chat {
+  "endpoint": endpoint,
+  "model":    model,
+  "messages": [
+    {"role":"system","content": sys},
+    {"role":"user","content": task}
+  ],
+  "response_format": {"type":"json_object"},
+  "temperature": 0,
+  "api_token": api_token,
+  "timeout_ms": 25000
+}
+
+// Log raw reply (for debugging)
+call log.info {"llm_raw": ans}
+
+// Parse JSON and extract `rasm`
+let parsed = call json.parse ans
+let rasm   = call json.get {"json": parsed, "path": "rasm"}
+
+// If rasm exists, save to file; else warn
+let no_rasm = call is.unit rasm
+jmpif no_rasm -> :NO_RASM
+
+let out_path = "tmp/result.rasm"
+let _ = await call fs.write {
+  "path": out_path,
+  "data_utf8": rasm,
+  "create": true,
+  "truncate": true
+}
+call log.info {"saved_rasm": out_path}
+
+// Execute the saved program via eval.dsl
+let code_txt = await call fs.read {"path": out_path}
+let run_res = await call eval.dsl {
+  "code": code_txt,
+  "allow": ["log","env","dotenv","b64","is","kv","fs","http","sh","rand","math","str","eval","llm"]
+}
+call log.info {"eval_result": run_res}
+jmp -> :END
+
+:NO_RASM
+call log.warn "LLM reply has no `rasm` field or it's null"
+jmp -> :END
+
+:NO_API
+call log.error "LLM_API_KEY is missing (.env/process env)"
+
+:END
+halt
+
+:ERR
+untrap
+call log.error {"err": err}
+halt

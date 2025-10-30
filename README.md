@@ -60,7 +60,7 @@ CLI flags (e.g., `--step-limit`) override config values.
 
 ## Built-in modules
 
-`log`, `env`, `dotenv`, `is`, `b64`, `str`, `fs`, `http` (async), `sh` (async), `rand`, `math`, `eval`, `llm` (chat), `json` core ops.
+`log`, `env`, `dotenv`, `is`, `b64`, `str`, `fs`, `http`, `sh`, `rand`, `math`, `eval`, `llm`, `json` core ops.
 
 ---
 
