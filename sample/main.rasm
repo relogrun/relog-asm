@@ -8,11 +8,10 @@ use is
 use eval
 
 // Use relog-asm binary to run this script: `./relog-asm sample/main.rasm`
+// Check .env.template for required vars
 
 // LLM flow: build a system prompt from parts; read task from task.md; expect JSON { "rasm": "...", "error": "...", "text": "..." }.
 // If "rasm" exists, save to file and then execute it via eval.dsl.
-
-// Check .env.template for required vars
 
 trap :ERR -> err
 
