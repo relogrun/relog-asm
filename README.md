@@ -1,6 +1,7 @@
 # RelogASM (CLI)
 
-RelogASM is a small assembly-style DSL and embeddable VM for composing deterministic pipelines from simple, typed instructions. 
+RelogASM is an experimental, assembly-style DSL and embeddable VM.
+It composes prompts from files, calls an LLM for strict JSON output, and can execute the returned program in the same DSL.
 
 DSL reference: [docs/dsl.md](./docs/dsl.md)
 
