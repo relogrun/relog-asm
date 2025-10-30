@@ -2,7 +2,7 @@
 
 RelogASM is a small assembly-style DSL and embeddable VM for composing deterministic pipelines from simple, typed instructions. 
 
-DSL reference: [DSL.md](./DSL.md)
+DSL reference: [docs/dsl.md](./docs/dsl.md)
 
 ## Quick start
 
