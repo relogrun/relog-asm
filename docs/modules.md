@@ -45,7 +45,7 @@ use fs {
 // Write -> Read (utf8)
 use fs { root: ".", read_only: false }
 let _ = await call fs.write {"path":"tmp/hi.txt","data_utf8":"Hi","create":true}
-let s = await call fs.read {"path":"tmp/hi.txt","encoding":"utf8"}
+let s = await call fs.read {"path":"tmp/hi.txt"}
 ```
 
 ---
